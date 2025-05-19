@@ -24,6 +24,12 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
+    public String extractUsername(String token) {
+        return extractAllClaims(token).getSubject();
+    }
+
+    
+
     // Méthode générique pour extraire n’importe quelle claim
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);

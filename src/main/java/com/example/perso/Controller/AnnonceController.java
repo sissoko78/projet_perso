@@ -1,13 +1,16 @@
 package com.example.perso.Controller;
 
 import com.example.perso.Model.Annonce;
-import com.example.perso.Repository.AnnonceRepository;
 import com.example.perso.Service.AnnonceService;
+
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Controller;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 @RestController
 @AllArgsConstructor
@@ -17,19 +20,30 @@ public class AnnonceController {
 
 
     @PostMapping("/post_annonce")
-    public Annonce addAnnonce(@RequestBody Annonce annonce) {
-        return annonceService.addAnnonce(annonce);
-    }
+    public ResponseEntity<Annonce> addAnnonce(@RequestBody Annonce annonce, HttpServletRequest request) {
+    Annonce createdAnnonce = annonceService.addAnnonce(annonce, request);
+    return ResponseEntity.ok(createdAnnonce);
+}
+
 
     @GetMapping("/getAll")
-    public List<Annonce> getAllAnnonces() {
-        return annonceService.getAllAnnonces();
-    };
+    public ResponseEntity<List<Annonce>> getAllAnnonces(HttpServletRequest request) {
+        List<Annonce> annonces = annonceService.getAllAnnonces(request);
+        return ResponseEntity.ok(annonces);
+    }
 
+    @GetMapping("GetparUser")
+    public ResponseEntity <List<Annonce>>GetAnnonparUser(HttpServletRequest request) {
+        List<Annonce> annonces= annonceService.getAnnoncesByConnectedUser(request);
+        return ResponseEntity.ok(annonces);
+    }
+
+    
+    
 
     @DeleteMapping("/delete/{id}")
     public String deleteAnnonce( @PathVariable long id) {
-        annonceService.DeleteAnnonce(id);
+        annonceService.deleteAnnonce(id);
         return "Annonce supprimer avec succes";
     };
 }
