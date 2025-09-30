@@ -1,5 +1,7 @@
 package com.example.perso.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,10 +26,10 @@ public class Annonce {
     private String kilodisponible;
     private String prix_kilo;
     private String moyentransport;
-    
+
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonIgnore
+    @JsonIgnoreProperties({"annonces", "sentMessages", "receivedMessages", "password"})
     private User user;
 }

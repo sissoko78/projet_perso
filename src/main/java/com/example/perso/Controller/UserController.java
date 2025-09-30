@@ -18,6 +18,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/User")
+
 public class UserController {
 
     private final UserService userService;
@@ -38,9 +39,19 @@ public class UserController {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
+
+        // Récupérer l'utilisateur
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
+
+        // Générer le token
         String token = jwtService.generateToken(request.getEmail());
-        return ResponseEntity.ok(new AuthResponse(token));
+
+        // Retourner token + user
+        AuthResponse authResponse = new AuthResponse(token, user);
+        return ResponseEntity.ok(authResponse);
     }
+
 
     @GetMapping("/GetAllUser")
     public List<User> GetAllUser() {

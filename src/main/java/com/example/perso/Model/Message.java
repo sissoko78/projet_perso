@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,13 +28,13 @@ public class Message {
 
     // L'utilisateur qui envoie le message (relation ManyToOne)
     @ManyToOne
-    @JsonIgnore
+    @JsonIgnoreProperties
     @JoinColumn(name = "sender_id", nullable = false)
     private User sender;
 
     // L'utilisateur qui reçoit le message (relation ManyToOne)
     @ManyToOne
-    @JsonIgnore
+    @JsonIgnoreProperties
     @JoinColumn(name = "receiver_id", nullable = false)
     private User receiver;
 
